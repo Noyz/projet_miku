@@ -1,20 +1,44 @@
 // Components/Search.js
 
 import React from 'react'
-import {TouchableOpacity ,StyleSheet, View, TextInput, FlatList, Text } from 'react-native'
+import films from '../Helpers/filmsData.js'
+import FilmItem from './FilmItem'
+import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi.js'
+
+import {TouchableOpacity, StyleSheet, View, TextInput, FlatList, Button, Text } from 'react-native'
+
 
 class Search extends React.Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			films : [], 
+		}
+		this.searchedText = ""
+	}
+
+
+	_searchTextInputChanged(text){
+		this.searchedText = text
+	}
+
+	_loadFilms() {
+   		if(this.searchedText.length > 0 ){
+   			getFilmsFromApiWithSearchedText(this.searchedText).then(data => this.setState({films: data.results}));
+   		}
+	}
   render() {
     return (
       <View style={styles.main_container}>
-        <TextInput style={styles.textinput} placeholder='Titre du film'/>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TextInput onChangeText={(text) => this._searchTextInputChanged(text) } style={styles.textinput} placeholder='Titre du film'/>
+        <TouchableOpacity style={styles.button} onPress={() => this._loadFilms()}>
 	     	<Text style={{color:'#5EB6DD'}}> Rechercher </Text>
     	</TouchableOpacity>
     	<FlatList
-		  data={[{key: 'a'}, {key: 'b'}]}
-		  renderItem={({item}) => <Text>{item.key}</Text>}
-		/>
+          	data={this.state.films}
+          	keyExtractor={(item) => item.id.toString()}
+  			renderItem={({item}) => <FilmItem film={item}/>}
+        />
       </View>
     )
   }
@@ -22,10 +46,8 @@ class Search extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-  	flex:1,
     marginTop: 40,
-    flexDirection: 'column',
-    padding: 20
+    padding: 5
   },
   textinput: {
     marginLeft: 5,

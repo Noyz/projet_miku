@@ -7,7 +7,7 @@ import {AppRegistry, View, StyleSheet} from 'react-native'
 export default class App extends React.Component {
   render() {
     return (
-      <View>
+      <View style={{flex:1}}>
         <Search/>
       </View>
     );
