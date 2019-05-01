@@ -1,7 +1,6 @@
 // Components/Search.js
 
 import React from 'react'
-import films from '../Helpers/filmsData.js'
 import FilmItem from './FilmItem'
 import { getFilmsFromApiWithSearchedText, getImageFromApi } from '../API/TMDBApi.js'
 
@@ -11,25 +10,41 @@ import {TouchableOpacity, StyleSheet, View, TextInput, FlatList, Button, Text, A
 class Search extends React.Component {
 	constructor(props){
 		super(props)
+		this.searchedText = ""
+		this.page = 0
+		this.totalPages = 0
 		this.state = {
 			films : [],
 			isLoading: false 
 		}
-		this.searchedText = ""
 	}
 
-
+	_loadFilms() {
+   		if(this.searchedText.length > 0 ){
+   			this.setState({ isLoading: true }) 
+   			getFilmsFromApiWithSearchedText(this.searchedText, this.page+1).then(data => {
+	          this.page = data.page
+	          this.totalPages = data.total_pages
+	          this.setState({
+	            films: [ ...this.state.films, ...data.results ],
+	            isLoading: false
+	          })
+	      })
+   		}
+	}
 
 	_searchTextInputChanged(text){
 		this.searchedText = text
 	}
 
-	_loadFilms() {
-   		if(this.searchedText.length > 0 ){
-   			this.setState({ isLoading: true }) // Lancement du chargement
-   			getFilmsFromApiWithSearchedText(this.searchedText).then(data => 
-   				this.setState({films: data.results, isLoading: false}));
-   		}
+	_searchFilms (){
+		this.page = 0
+		this.totalPages = 0
+		this.setState({
+			films: []
+		}, () => {
+			this._loadFilms()
+		})
 	}
 
 	_displayLoading() {
@@ -48,7 +63,7 @@ class Search extends React.Component {
         <TextInput 
 	        onChangeText={(text) => this._searchTextInputChanged(text) } 
 	        style={styles.textinput}  
-	        onSubmitEditing={() => this._loadFilms()} 
+	        onSubmitEditing={() => this._searchFilms()} 
 	        placeholder='Titre du film'
         />
         <TouchableOpacity 
@@ -58,8 +73,14 @@ class Search extends React.Component {
     	</TouchableOpacity>
     	<FlatList
           	data={this.state.films}
-          	keyExtractor={(item) => item.id.toString()}
+  			keyExtractor={(item) => item.id.toString()}
   			renderItem={({item}) => <FilmItem film={item}/>}
+  			onEndReachedThreshold={0.5}
+		    onEndReached={() => {
+		    if (this.page < this.totalPages) { // On vérifie qu'on n'a pas atteint la fin de la pagination (totalPages) avant de charger plus d'éléments
+		        this._loadFilms()
+		      }
+		    }}
         />
         {this._displayLoading()}
       </View>

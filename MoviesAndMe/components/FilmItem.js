@@ -6,6 +6,7 @@ import { getImageFromApi}  from '../API/TMDBApi.js'
 
 class FilmItem extends React.Component {
 	render() {
+		console.log(this.props.film)
 		return(
 			<View style={styles.main_container}>
 				<Image style={styles.image} source={{uri: getImageFromApi(this.props.film.poster_path)}} />
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   	},
   	content_container: {
 	    flex: 1,
-	    margin: 5,
+	    margin: 5
 	},
 	header_container: {
 		flex:3,
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 	date_text: {
 	    textAlign: 'right',
 	    fontSize: 14
-	  }
+	 }
 })
 
 export default FilmItem
