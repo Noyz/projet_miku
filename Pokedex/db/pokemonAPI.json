@@ -1,0 +1,9 @@
+// API/PokemonAPI.js
+
+export function getPokemonFromDataBase (text) {
+  const url = '/pokemon.json/pokedex.json' + text
+  return fetch(url)
+    .then((response) => response.json())
+    .catch((error) => console.error(error))
+
+}
