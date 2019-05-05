@@ -1,5 +1,6 @@
 import React from 'react'
 import PokemonItems from './pokemonItems.js'
+import pokemons from '../db/pokedex.js'
 import { getPokemonFromDataBase } from '../API/PokemonAPI.js'
 
 import {Text, TextInput, View, StyleSheet, Button, Picker, FlatList, SectionList, TouchableOpacity} from 'react-native'
@@ -8,14 +9,35 @@ class Search extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			pokemons:[]
+			pokemons:[],
+			text:[],
+			number:[]
 		}
 	}
 	
 	
 
-	_loadPokemons(){
-		getPokemonFromDataBase().then(data => console.log(data));
+	_loadPokemonsFromSearchText(text){
+		var pkmnarray = [];
+		var str1 = RegExp(text);
+		pokemons.forEach(function(element) {
+  			if(str1.test(element.name.english)){
+  				pkmnarray.push(element);
+  			}
+		});
+		this.setState({pokemons:pkmnarray})
+		
+	}
+
+	_loadPokemonsFromNumber(number){
+		var pkmnarray = [];
+		pokemons.forEach(function(element) {
+  			if(number == element.id){
+  				pkmnarray.push(element);
+  			}
+		});
+		this.setState({pokemons:pkmnarray})
+		
 	}
 
 	render(){
@@ -30,7 +52,9 @@ class Search extends React.Component {
 					        editable = {true}
 					        maxLength = {40}
 					        placeholder = "Name"
-					        onChangeText={(text) => this.setState({text})}
+					        onChangeText={(text) =>  {this._loadPokemonsFromSearchText(text)}}
+					        onSubmitEditing={() => { this._loadPokemonsFromSearchText(this.state.text) }}
+					        
 
 					      />
 					      <TextInput 
@@ -39,7 +63,9 @@ class Search extends React.Component {
 					        editable = {true}
 					        maxLength = {40}
 					        placeholder = "#Number"
-					        onChangeText={(text) => this.setState({text})}
+					        onChangeText={(number) => this.setState({number:number})}
+					        keyboardType={'numeric'}
+					        onSubmitEditing={() => {this._loadPokemonsFromNumber(this.state.number)}}
 					      />
 						</View>
 						<View style={styles.picker_container}>
@@ -96,17 +122,17 @@ class Search extends React.Component {
 						</View>
 					</View>
 					<View style={styles.button_container}>
-						<TouchableOpacity 
-							onPress={this._onPressButton} 
+						<TouchableOpacity  
 							style={styles.button}
-					        title = "Rechercher" onPress={() => this._loadPokemons()}>
+					        title = "Rechercher" 
+					        onPress={() => this._loadPokemonsFromSearchText(this.state.text)}>
 					        <Text> Rechercher</Text>
 					    </TouchableOpacity>
 					</View>
 				</View>		
 				<View style = {styles.list_container}>
 					<FlatList
-					  data={this.pokemons}
+					  data={this.state.pokemons}
 					  keyExtractor={(item) => item.id.toString()}
 					  horizontal={false}
 					  numColumns={4}

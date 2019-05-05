@@ -17,6 +17,8 @@ class PokemonItem extends React.Component {
 						
 					/>
 					<Text style={styles.text}> {this.props.pokemon.name.english}</Text>
+					<Text style={styles.text}> {'# ' + this.props.pokemon.id}</Text>
+
 				</View>
 
 			</View>
