@@ -13,11 +13,18 @@ class Search extends React.Component {
 			text:[],
 			number:[],
 			firstType:[],
-			secondType:[]
+			secondType:[],
+			pokemonDetail:[]
 		}
 	}
-	
-	
+
+  	_displayPokemonDetail = (idPokemon) => {
+  		getPokemonFromDataBase(idPokemon).then(data => 
+  			this.props.navigation.navigate('PokemonDetails', { pokemon: data })
+  		);
+ 
+    	
+  	}
 
 	_loadPokemonsFromSearchText(text){
 		var pkmnarray = [];
@@ -65,9 +72,11 @@ class Search extends React.Component {
 	}
 
 	render(){
+		const { pokemon, displayPokemonDetail} = this.props
+
 		return(
 			<View>
-				<View style = {styles.search_container}>
+				<View style = {styles.search_container} >
 					<View style = {styles.searchInputs_container}>
 						<View style = {{flexDirection:'row'}}>
 							<TextInput 
@@ -157,7 +166,7 @@ class Search extends React.Component {
 					  horizontal={false}
 					  numColumns={4}
 					  ItemSeparatorComponent={this.FlatListItemSeparator}
-					  renderItem={({item}) => <PokemonItems pokemon={item}/>}
+					  renderItem={({item}) => <PokemonItems pokemon={item} displayPokemonDetail={this._displayPokemonDetail}/>}
 					/>    
 				</View>
 			</View>

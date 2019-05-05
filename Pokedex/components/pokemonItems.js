@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+
 
 class PokemonItem extends React.Component {
 	constructor(props){
@@ -7,14 +8,16 @@ class PokemonItem extends React.Component {
 		pokemon : []
 	}
 	render(){
+		const { pokemon, displayPokemonDetail, navigation } = this.props
 		return(
-			<View>
-				<View style = {styles.main_container}>
+			<TouchableOpacity
+				style = {styles.main_container}
+				onPress={() => displayPokemonDetail(pokemon)}
+			>
 					<Image source={this.props.pokemon.image} style = {styles.image}/>
 					<Text style={styles.text}> {this.props.pokemon.name.english}</Text>
 					<Text style={styles.text}> {'# ' + this.props.pokemon.id}</Text>
-				</View>
-			</View>
+			</TouchableOpacity>
 		)
 	}
 };

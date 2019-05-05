@@ -1,20 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Search from './components/search.js'
+import { StyleSheet, Text, View } from 'react-native'
+import { createStackNavigator, createAppContainer } from "react-navigation"
+import Navigation from './navigation/navigation.js'
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Search/>
+      <View style={{flex:1}}>
+        <Navigation/>
       </View>
-    );
+      
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  }
-});
