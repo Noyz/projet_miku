@@ -1,6 +1,5 @@
 import React from 'react'
 import PokemonItems from './pokemonItems.js'
-import pokemons from '../db/pokedex.js'
 import { getPokemonFromDataBase } from '../API/PokemonAPI.js'
 
 import {Text, TextInput, View, StyleSheet, Button, Picker, FlatList, SectionList, TouchableOpacity} from 'react-native'
