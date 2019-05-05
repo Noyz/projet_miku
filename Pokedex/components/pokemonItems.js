@@ -4,23 +4,16 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 class PokemonItem extends React.Component {
 	constructor(props){
 		super(props);
-		pokemon : {}
-
+		pokemon : []
 	}
 	render(){
 		return(
 			<View>
 				<View style = {styles.main_container}>
-					<Image
-						source={this.props.pokemon.image}
-						style = {styles.image}
-						
-					/>
+					<Image source={this.props.pokemon.image} style = {styles.image}/>
 					<Text style={styles.text}> {this.props.pokemon.name.english}</Text>
 					<Text style={styles.text}> {'# ' + this.props.pokemon.id}</Text>
-
 				</View>
-
 			</View>
 		)
 	}
