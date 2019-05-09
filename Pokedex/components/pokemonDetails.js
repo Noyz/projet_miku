@@ -8,20 +8,37 @@ class PokemonDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      pokemon:this.props.navigation.state.params.pokemon
+      pokemon:this.props.navigation.state.params.pokemon,
+      pokemonTypes:{}
     }
   }
 
+  _renderType(){
+    var type2;
+
+    if(this.state.pokemon.types[1] != undefined){
+      return <Text style={styles.types}>{this.state.pokemon.types[1].type.name}</Text>
+    }
+  }
+
+
+  
   render() {
-    console.log(this.state.pokemon)
     return (
       <View style={styles.main_container}>
-      <Image
-        source={{uri:this.state.pokemon.sprites.front_default}}
-        style={{height:50, width:50}}
-      />
-      <Text>{'# '+ this.state.pokemon.id}</Text>
+        <Image
+          source={{uri:this.state.pokemon.sprites.front_default}}
+          style={styles.image}
+        />
+
+        <Text>{'# '+ this.state.pokemon.id}</Text>
+        
         <Text>{this.state.pokemon.name}</Text>
+        <View styles={{flexDirection:'row'}}>
+          <Text style={styles.types}>{this.state.pokemon.types[0].type.name}</Text>
+          {this._renderType()}
+        </View>
+        
       </View>
     )
   }
@@ -30,6 +47,15 @@ class PokemonDetails extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
+    alignItems:'center',
+    paddingTop:100
+  },
+  image:{
+    height:100,
+    width:100
+  },
+  types:{
+    flex:1
   }
 })
 

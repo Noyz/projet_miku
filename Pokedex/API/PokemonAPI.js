@@ -10,3 +10,14 @@ export function getPokemonFromDataBase (text) {
       .catch(err => console.log(err));
   
 }
+
+export function getPokemonFromDataBaseForAll (text) {
+    const url = 'https://pokeapi.co/api/v2/pokemon/' + text
+    return fetch(url)
+      .then(res => res.json())
+      .then((data) => {
+        return data;
+      })
+      .catch(err => console.log(err));
+  
+}

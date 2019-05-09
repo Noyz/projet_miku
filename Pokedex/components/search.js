@@ -19,14 +19,11 @@ class Search extends React.Component {
 	}
 
   	_displayPokemonDetail = (idPokemon) => {
-  		getPokemonFromDataBase(idPokemon).then(data => 
-  			this.props.navigation.navigate('PokemonDetails', { pokemon: data })
-  		);
- 
-    	
+  		getPokemonFromDataBase(idPokemon).then(data => this.props.navigation.navigate('PokemonDetails', { pokemon: data }));
   	}
 
 	_loadPokemonsFromSearchText(text){
+		console.log(this.state.pokemon)
 		var pkmnarray = [];
 		var str1 = RegExp(text);
 		pokemons.forEach(function(element) {
@@ -73,7 +70,6 @@ class Search extends React.Component {
 
 	render(){
 		const { pokemon, displayPokemonDetail} = this.props
-
 		return(
 			<View>
 				<View style = {styles.search_container} >
