@@ -7,6 +7,7 @@ class PokemonItem extends React.Component {
 		super(props);
 		pokemon : []
 	}
+	
 	render(){
 		const { pokemon, displayPokemonDetail, navigation } = this.props
 		return(

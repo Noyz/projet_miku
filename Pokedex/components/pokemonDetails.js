@@ -8,14 +8,12 @@ class PokemonDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      pokemon:this.props.navigation.state.params.pokemon,
-      pokemonTypes:{}
+      pokemon:this.props.navigation.state.params.pokemon
     }
   }
 
   _renderType(){
     var type2;
-
     if(this.state.pokemon.types[1] != undefined){
       return <Text style={styles.types}>{this.state.pokemon.types[1].type.name}</Text>
     }
@@ -34,7 +32,7 @@ class PokemonDetails extends React.Component {
         <Text>{'# '+ this.state.pokemon.id}</Text>
         
         <Text>{this.state.pokemon.name}</Text>
-        <View styles={{flexDirection:'row'}}>
+        <View>
           <Text style={styles.types}>{this.state.pokemon.types[0].type.name}</Text>
           {this._renderType()}
         </View>
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
     width:100
   },
   types:{
-    flex:1
+
   }
 })
 
